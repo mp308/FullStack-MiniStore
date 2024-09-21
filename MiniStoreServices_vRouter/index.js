@@ -4,6 +4,8 @@ const { swaggerSpecs, swaggerUI } = require('./swagger');
 const cookieParser = require("cookie-parser");
 const apiRouter = require('./routes/api');
 const apiv2Router = require('./routes/apiv2');
+const apiProdRouter = require('./routes/apiProd');
+
 const https = require('https');
 const fs = require('fs');
 const app = express();
@@ -18,6 +20,7 @@ app.use(cors({
 app.use(cookieParser());
 app.use('/api/v1', apiRouter);
 app.use('/api/v2', apiv2Router);
+app.use("/api/prod", apiProdRouter)
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 const ssl_options = {
