@@ -67,34 +67,44 @@
       .catch(error => console.error('Error fetching orders:', error));
   }
   
-  fetchData();
+  
   
   // Edit order
   const onEdit = (id) => {
     router.push('/update-order/' + id);
   }
   
-  // Delete order
-  const onDelete = (id) => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-  
-    const requestOptions = {
-      method: 'DELETE',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-  
-    fetch(`http://localhost:8800/api/v1/orders/${id}`, requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        alert(result.message);
-        if (result.status === 'ok') {
-          fetchData(); // Update data after deleting order
-        }
-      })
-      .catch(error => console.error('Error deleting order:', error));
-  }
+// Delete order
+const onDelete = (id) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const requestOptions = {
+    method: 'DELETE',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  fetch(`http://localhost:8800/api/v1/orders/${id}`, requestOptions)
+    .then(response => {
+      if (response.ok) {
+        return response.json(); // Parse the response JSON if the request was successful
+      } else {
+        throw new Error('Failed to delete the order');
+      }
+    })
+    .then(result => {
+      alert('Order deleted successfully.');
+      fetchData(); // Update data after deleting order
+    })
+    .catch(error => {
+      console.error('Error deleting order:', error);
+      alert('Error deleting order.');
+    });
+}
+
+
+  fetchData();
   
   // Create new order
   const onCreate = () => {
