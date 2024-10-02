@@ -1,3 +1,6 @@
+# ministore_frontend_tutorial
+ใช้ vue ในส่งขอ้มูลผ่าน api และการทำ crud ผ่าน webpage 
+
 # ministore_backend_tutorial
 
 ระบบ Backend Service เพื่อการเรียนการสอน
