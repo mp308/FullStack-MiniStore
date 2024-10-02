@@ -3,9 +3,6 @@
       <q-form @submit="onSubmit">
         <div class="q-gutter-md">
   
-          <!-- Order ID -->
-          <q-input filled v-model="form.orderId" label="Order ID" type="number" required />
-  
           <!-- Customer ID -->
           <q-input filled v-model="form.customerId" label="Customer ID" type="number" required />
   
@@ -51,7 +48,6 @@
   
   // ฟอร์มข้อมูลคำสั่งซื้อ
   const form = ref({
-    orderId: '', // เพิ่ม orderId ที่นี่
     customerId: '',
     orderDate: '',
     totalAmount: '',
@@ -93,7 +89,6 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        orderId: parseInt(form.value.orderId), // ใช้ orderId ที่ผู้ใช้กรอก
         customerId: parseInt(form.value.customerId),  // แปลง customerId เป็น Int
         orderDate: form.value.orderDate,  // ไม่ต้องแปลงเนื่องจากเป็นวันที่
         items: form.value.items.map(item => ({

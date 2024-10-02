@@ -24,7 +24,7 @@ CREATE TABLE `orderdetail` (
 
 -- CreateTable
 CREATE TABLE `orders` (
-    `order_id` INTEGER NOT NULL,
+    `order_id` INTEGER NOT NULL AUTO_INCREMENT,
     `customer_id` INTEGER NOT NULL,
     `order_date` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     `order_status` ENUM('processing', 'completed', 'cancelled') NULL,
@@ -50,7 +50,7 @@ CREATE TABLE `payments` (
 
 -- CreateTable
 CREATE TABLE `products` (
-    `product_id` INTEGER NOT NULL,
+    `product_id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `description` TEXT NULL,
     `price` DECIMAL(10, 2) NOT NULL,
@@ -71,3 +71,15 @@ CREATE TABLE `users` (
     UNIQUE INDEX `Users_UNIQUE`(`UserName`),
     PRIMARY KEY (`UserID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `orderdetail` ADD CONSTRAINT `orderdetail_order_id_fkey` FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `orderdetail` ADD CONSTRAINT `orderdetail_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `products`(`product_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `orders` ADD CONSTRAINT `orders_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `customers`(`customer_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `payments` ADD CONSTRAINT `payments_order_id_fkey` FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`) ON DELETE RESTRICT ON UPDATE CASCADE;

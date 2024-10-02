@@ -2,39 +2,39 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 
 const createOrder = async (req, res) => {
-    const { orderId, customerId, orderDate, items, paymentMethod, totalAmount } = req.body;
+    const { customerId, orderDate, items, paymentMethod, totalAmount } = req.body;
 
-    if (!customerId || !items || !orderId || !paymentMethod || !totalAmount) {
+    if (!customerId || !items || !paymentMethod || !totalAmount) {
         return res.status(400).json({ message: 'Invalid order data' });
     }
+
     try {
-        const [order, payment] = await prisma.$transaction([
-            prisma.orders.create({
-                data: {
-                    order_id: orderId,
-                    customer_id: customerId,
-                    order_date: new Date(orderDate),
-                    order_status: 'processing',
-                    total_amount: totalAmount,
-                    orderdetail: {
-                        create: items.map((item) => ({
-                            product_id: item.productId,
-                            quantity: item.quantity,
-                            unit_price: item.unitPrice,
-                        })),
-                    },
+        const order = await prisma.orders.create({
+            data: {
+                customer_id: customerId,
+                order_date: new Date(orderDate),
+                order_status: 'processing',
+                total_amount: totalAmount,
+                orderdetail: {
+                    create: items.map((item) => ({
+                        product_id: item.productId,
+                        quantity: item.quantity,
+                        unit_price: item.unitPrice,
+                    })),
                 },
-            }),
-            prisma.payments.create({
-                data: {
-                    order_id: orderId,
-                    amount: totalAmount,
-                    payment_method: paymentMethod,
-                    payment_status: 'pending',
-                    amount: totalAmount
-                },
-            }),
-        ]);
+            },
+        });
+
+        // Use the order_id from the created order
+        const payment = await prisma.payments.create({
+            data: {
+                order_id: order.order_id, // Reference the generated order_id
+                amount: totalAmount,
+                payment_method: paymentMethod,
+                payment_status: 'pending',
+            },
+        });
+
         console.log('Transaction committed:', { order, payment });
         res.status(200).json('Order created successfully.');
     } catch (err) {
@@ -42,6 +42,7 @@ const createOrder = async (req, res) => {
         res.status(500).json(err);
     }
 };
+
 
 const getOrders = async (req, res) => {
     try {
@@ -163,4 +164,3 @@ const deleteOrder = async (req, res) => {
 
 
 module.exports = { createOrder, getOrders, getOrderById, updateOrder, deleteOrder };
-
