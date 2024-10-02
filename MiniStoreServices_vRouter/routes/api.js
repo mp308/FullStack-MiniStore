@@ -19,7 +19,14 @@ router.get('/customers/:id', customerController.getCustomer);
 router.get('/customers/q/:term', apiLimiter, customerController.getCustomersByTerm);
 //router.get('/customers', authController.verifyToken, customerController.getCustomers);
 router.get('/customers', apiLimiter, customerController.getCustomers);
+
 router.post('/orders', apiLimiter, orderController.createOrder);
+router.get('/orders', apiLimiter, orderController.getOrders);
+router.get('/orders/:id', apiLimiter, orderController.getOrderById);
+router.put('/orders/:id', apiLimiter, orderController.updateOrder);
+router.delete('/orders/:id', apiLimiter, orderController.deleteOrder);
+
+
 
 router.post('/users', userController.createUser);
 router.post('/login', authController.login);

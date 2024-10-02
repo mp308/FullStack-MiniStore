@@ -23,6 +23,8 @@ app.use('/api/v2', apiv2Router);
 app.use("/api/prod", apiProdRouter)
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
+app.use('/uploads', express.static('uploads'));
+
 const ssl_options = {
 
     key: fs.readFileSync('./ssl/key.pem'),

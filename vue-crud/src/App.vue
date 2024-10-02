@@ -16,8 +16,9 @@ import { RouterView } from 'vue-router'
         </q-toolbar-title>
         <q-tabs align="left">
         <q-route-tab to="/" label="Customer" />
-        <q-route-tab to="/product" label="Product" />
-        <q-route-tab to="/about" label="About" />
+        <q-route-tab to="/product" label="Products" />
+        <q-route-tab to="/orders" label="Orders" />
+        <q-route-tab to="/about" label="about" />
   
       </q-tabs>
       </q-toolbar>
