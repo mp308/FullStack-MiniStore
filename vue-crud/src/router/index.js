@@ -46,7 +46,7 @@ const router = createRouter({
     },
     {
       path: '/orders',
-      name: 'update-product',
+      name: 'orders-product',
       component: OrderHome
     },
     {
